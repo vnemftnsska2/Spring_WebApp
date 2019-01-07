@@ -14,7 +14,6 @@ public class BoardDAOImpl implements BoardDAO {
 
 	@Inject
 	private SqlSession session;
-	
 	private static String namespace = "org.tnsska2.mapper.BoardMapper";
 	
 	@Override
@@ -57,6 +56,12 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public List<BoardVO> listCriteria(Criteria cri) throws Exception {
 		return session.selectList(namespace+".listCriteria", cri);
+	}
+
+	@Override
+	public int countPaging(Criteria cri) throws Exception {
+		
+		return session.selectOne(namespace+".countPaging", cri);
 	}
 	
 }

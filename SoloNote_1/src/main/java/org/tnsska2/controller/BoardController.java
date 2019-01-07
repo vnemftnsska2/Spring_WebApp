@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.tnsska2.domain.BoardVO;
 import org.tnsska2.domain.Criteria;
+import org.tnsska2.domain.PageMaker;
 import org.tnsska2.service.BoardService;
 
 @Controller
@@ -80,4 +81,16 @@ public class BoardController {
 		return "redirect:/board/listAll";
 	}
 	
+	@RequestMapping(value = "/listPage", method = RequestMethod.GET)
+	public void listPage(Criteria cri, Model model)throws Exception{
+		
+		logger.info(cri.toString());
+		
+		model.addAttribute("list", service.listCriteria(cri));
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(131);
+		
+		model.addAttribute("pageMaker", pageMaker);
+	}
 }
