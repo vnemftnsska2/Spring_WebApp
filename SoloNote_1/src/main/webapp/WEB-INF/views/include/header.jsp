@@ -314,7 +314,7 @@
           <ul class="sidebar-menu">
             <li class="header">순남2 카테고리</li>
             <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>소개</span></a></li>
-            <li><a href="/board/listAll"><i class="fa fa-circle-o text-yellow"></i> <span>게시판</span></a></li>
+            <li><a href="/sboard/list"><i class="fa fa-circle-o text-yellow"></i> <span>게시판</span></a></li>
             <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>뭐할까?</span></a></li>
           </ul>
         </section>

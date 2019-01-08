@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.tnsska2.domain.BoardVO;
 import org.tnsska2.domain.Criteria;
+import org.tnsska2.domain.SearchCriteria;
 
 public interface BoardService {
 
@@ -19,4 +20,9 @@ public interface BoardService {
 	
 	public List<BoardVO> listCriteria(Criteria cri)throws Exception;
 	
+	public int listCountCriteria(Criteria cri)throws Exception;
+	
+	public List<BoardVO> listSearchCriteria(SearchCriteria cri)throws Exception;
+	
+	public int listSearchCount(SearchCriteria cri)throws Exception;
 }

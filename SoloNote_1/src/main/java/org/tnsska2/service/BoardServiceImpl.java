@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import org.tnsska2.domain.BoardVO;
 import org.tnsska2.domain.Criteria;
+import org.tnsska2.domain.SearchCriteria;
 import org.tnsska2.persistence.BoardDAO;
 
 @Service
@@ -44,6 +45,25 @@ public class BoardServiceImpl implements BoardService {
 	public List<BoardVO> listCriteria(Criteria cri) throws Exception {
 
 		return dao.listCriteria(cri);
+	}
+	
+	// 10페이지 씩 끊어서 보여주도록 구현
+	@Override
+	public int listCountCriteria(Criteria cri) throws Exception {
+
+		return dao.countPaging(cri);
+	}
+
+	@Override
+	public List<BoardVO> listSearchCriteria(SearchCriteria cri) throws Exception {
+
+		return dao.listSearch(cri);
+	}
+
+	@Override
+	public int listSearchCount(SearchCriteria cri) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.listSearchCount(cri);
 	}
 
 }
