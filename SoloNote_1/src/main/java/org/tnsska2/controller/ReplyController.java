@@ -28,13 +28,15 @@ public class ReplyController {
 	// 댓글 등록 컨트롤러
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<String> register(@RequestBody ReplyVO vo) {
-
+		System.out.println("컨트롤러 접속 확인 : 댓글 등록");
 		ResponseEntity<String> entity = null;
 		try {
 			service.addReply(vo);
+			System.out.println("컨트롤러 접속 확인 : 성공");
 			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("컨트롤러 접속 확인 : 실패");
 			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 
