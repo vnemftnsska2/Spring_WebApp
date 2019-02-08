@@ -3,9 +3,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean id="dataSource"
@@ -38,5 +40,10 @@
 	<context:component-scan base-package="org.tnsska2.test" />
 	<context:component-scan base-package="org.tnsska2.persistence"></context:component-scan>
 	<context:component-scan base-package="org.tnsska2.service"></context:component-scan>
+	<!-- AOP 기능을 활용하기 위한 Advice 설정 -->
+	<context:component-scan base-package="org.tnsska2.aop"></context:component-scan>
+	
+	<!-- XML 방식으로 AOP기능 설정할 때 사용 -->
+	<aop:config></aop:config>
 	
 </beans>
