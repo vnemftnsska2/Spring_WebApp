@@ -39,5 +39,9 @@
 	<delete id="delete">
 		delete from tbl_reply where rno = #{rno}
 	</delete>
+	
+	<select id="getBno" resultType="int">
+		select bno from tbl_reply where rno = #{rno}
+	</select>
 
 </mapper>

@@ -12,7 +12,7 @@ public class MessageDAOImpl implements MessageDAO {
 	@Inject
 	private SqlSession session;
 	
-	private static String namespace = "org.tnsska2.mapper.MessageMapperss";
+	private static String namespace = "org.tnsska2.mapper.MessageMapper";
 	
 	@Override
 	public void create(MessageVO vo) throws Exception {

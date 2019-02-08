@@ -3,6 +3,7 @@ package org.tnsska2.service;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.tnsska2.domain.MessageVO;
 import org.tnsska2.persistence.MessageDAO;
 import org.tnsska2.persistence.PointDAO;
@@ -17,6 +18,7 @@ public class MessageServiceImpl implements MessageService {
 	@Inject
 	private PointDAO pointDAO;
 	
+	@Transactional
 	@Override
 	public void addMessage(MessageVO vo) throws Exception {
 

@@ -23,7 +23,7 @@ public class PointDAOImpl implements PointDAO{
 		paramMap.put("uid", uid);
 		paramMap.put("point", point);
 		
-		session.update(namespace + ".updatePoin", paramMap);
+		session.update(namespace + ".updatePoint", paramMap);
 	}
 
 	

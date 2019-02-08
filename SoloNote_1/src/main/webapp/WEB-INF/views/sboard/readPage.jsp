@@ -86,7 +86,7 @@
 			<!-- The time line -->
 			<ul class="timeline">
 				<!-- tmieline time label -->
-				<li class="time-label" id="repliesDiv"><span class="bg-green">Replies List</span></li>
+				<li class="time-label" id="repliesDiv"><span class="bg-green">Replies List <small id='replycntSmall'>[ ${boardVO.replycnt} ]</small></span></li>
 			</ul>
 			<div class='text-center'>
 				<ul id="pagination" class="pagination pagination-sm no-margin">
@@ -161,161 +161,165 @@
 			formObj.attr("method", "get");
 			formObj.submit();
 		});
-	});
-	
-	//페이징 처리 구현
-	var bno = ${boardVO.bno};
-	var replyPage = 1;	// 첫페이지는 1, 댓글의 페이지 번호를 유지하기 위해 정의한 변수
-	
-	function getPage(pageInfo){
 		
-		$.getJSON(pageInfo, function(data){
-			printData(data.list, $("#repliesDiv"), $("#template"));
-			printPaging(data.pageMaker, $(".pagination"));
+		//페이징 처리 구현
+		var bno = ${boardVO.bno};
+		var replyPage = 1;	// 첫페이지는 1, 댓글의 페이지 번호를 유지하기 위해 정의한 변수
+		// getPage("/replies/" + bno + "/" + replyPage); 삽질의 흔적...ㅅㅂ
+		
+		function getPage(pageInfo){
 			
-			$("#modifyModal").modal('hide');
-		});
-	}
-	
-	var printPaging = function(pageMaker, target) {
-		
-		var str = "";
-		
-		if(pageMaker.prev) {
-			str += "<li><a href='" + (pageMaker.startPage-1) + "'> << </a></li>";
-		}
-		
-		for(var i = pageMaker.startPage, len = pageMaker.endPage; i <= len; i++) {
-			var strClass = pageMaker.cri.page == i ? 'class = active' : '';
-			str += "<li " + strClass + "><a href='" + i + "'>" + i + "</a></li>";
-		}
-		
-		if(pageMaker.next) {
-			str += "<li><a href='" + (pageMaker.endPage + 1) + "'> >> </a></li>";
-		}
-		
-		target.html(str);
-	};
-	
-	// 댓글 목록 보기
-	$("#repliesDiv").on("click", function(){
-		if($(".timeline li").size() > 1) {
-			return;
-		}
-		getPage("/replies/" + bno + "/1");
-	});
-	
-	$(".pagination").on("click", "li a", function(event){
-		event.preventDefault();	// a 태그 속성을 막은 후
-		replyPage = $(this).attr("href");	// 다시 a태그의 속성 href 정의한다.
-		getPage("replies" + bno + "/" + replyPage); // href 안에 url을 변경시켜준다.
-	})
-	
-	// 댓글 추가 구현
-	$("#replyAddBtn").on("click", function(){	// 버튼을 클릭했을 시
-		
-		var replyerObj = $("#newReplyWriter");	// 작성자 객체를 변수로 담고
-		var replytextObj = $("#newReplyText");	// 위와 마찬가지고 변수에 객체를 담습니다.
-		var replyer = replyerObj.val();	// 작성자 이름을 변수에 담습니다.
-		var replytext = replytextObj.val();	// 댓글 내용을 변수에 담습니다.
-		
-		$.ajax({
-			type : 'post',
-			url : '/replies/',	// 댓글 등록 컨트롤러에 보낼 맵핑 주소
-			headers: {
-				"Content-Type" : "application/json",
-				"X-HTTP-Method-Override" : "POST" },
-			dataType : 'text',	// 서버로부터 받을 데이터 타입
-			data : JSON.stringify({bno:bno, replyer:replyer, replytext:replytext}),	// 서버로 보낼 때 스크립트 객체를 JSON 데이터로 변환하여 보낸다.
-			success : function(result){
-				console.log("result : " + result);	// 'SUCCESS' 가 찍혀야 함
-				if(result == 'SUCCESS') {
-					alert("등록 되었습니다.");
-					replyPage = 1;
-					getPage("/replies/" + bno + "/" + replyPage);
-					replyerObj.val("");
-					replytextObj.val("");	// 데이터를 등록했으니 입력 창 초기화 시켜줌.
-				}
+			$.getJSON(pageInfo, function(data){
+				printData(data.list, $("#repliesDiv"), $("#template"));
+				printPaging(data.pageMaker, $(".pagination"));
 				
+				$("#modifyModal").modal('hide');
+				$("#replycntSmall").html("[ " + data.pageMaker.totalCount + " ]")
+			});
+		}
+		
+		var printPaging = function(pageMaker, target) {
+			
+			var str = "";
+			
+			if(pageMaker.prev) {
+				str += "<li><a href='" + (pageMaker.startPage-1) + "'> << </a></li>";
 			}
+			
+			for(var i = pageMaker.startPage, len = pageMaker.endPage; i <= len; i++) {
+				var strClass = pageMaker.cri.page == i ? 'class = active' : '';
+				str += "<li " + strClass + "><a href='" + i + "'>" + i + "</a></li>";
+			}
+			
+			if(pageMaker.next) {
+				str += "<li><a href='" + (pageMaker.endPage + 1) + "'> >> </a></li>";
+			}
+			
+			target.html(str);
+		};
+		
+		// 댓글 목록 보기
+		$("#repliesDiv").on("click", function(){
+			if($(".timeline li").size() > 1) {
+				return;
+			}
+			getPage("/replies/" + bno + "/1");
 		});
 		
-	});
-	
-	// 댓글의 버튼 이벤트 처리
-	$(".timeline").on("click", ".replyLi", function(event){
+		$(".pagination").on("click", "li a", function(event){
+			event.preventDefault();	// a 태그 속성을 막은 후
+			replyPage = $(this).attr("href");	// 다시 a태그의 속성 href 정의한다.
+			getPage("replies" + bno + "/" + replyPage); // href 안에 url을 변경시켜준다.
+		})
 		
-		var reply = $(this);
-		
-		$("#replytext").val(reply.find('.timeline-body').text());
-		$(".modal-title").html(reply.attr("data-rno"));
-	});
-	
-	// 댓글 수정 버튼
-	$("#replyModBtn").on("click", function(){
-		
-		var rno = $(".modal-title").html();
-		var replytext = $("#replytext").val();
-		
-		$.ajax({
-			type : 'put',
-			url : '/replies/' + rno,
-			headers : {
-				"Content-Type" : "application/json",
-				"X-HTTP-Method-Override" : "PUT"
-			},
-			dataType : 'text',
-			data : JSON.stringify({replytext:replytext}),
-			success : function(result) {
-				console.log("result : " + result);
-				if(result == 'SUCCESS') {
-					alert("수정 되었습니다.");
-					getPage("/replies/" + bno + "/" + replyPage);
+		// 댓글 추가 구현
+		$("#replyAddBtn").on("click", function(){	// 버튼을 클릭했을 시
+			
+			var replyerObj = $("#newReplyWriter");	// 작성자 객체를 변수로 담고
+			var replytextObj = $("#newReplyText");	// 위와 마찬가지고 변수에 객체를 담습니다.
+			var replyer = replyerObj.val();	// 작성자 이름을 변수에 담습니다.
+			var replytext = replytextObj.val();	// 댓글 내용을 변수에 담습니다.
+			
+			$.ajax({
+				type : 'post',
+				url : '/replies/',	// 댓글 등록 컨트롤러에 보낼 맵핑 주소
+				headers: {
+					"Content-Type" : "application/json",
+					"X-HTTP-Method-Override" : "POST" },
+				dataType : 'text',	// 서버로부터 받을 데이터 타입
+				data : JSON.stringify({bno:bno, replyer:replyer, replytext:replytext}),	// 서버로 보낼 때 스크립트 객체를 JSON 데이터로 변환하여 보낸다.
+				success : function(result){
+					console.log("result : " + result);	// 'SUCCESS' 가 찍혀야 함
+					if(result == 'SUCCESS') {
+						alert("등록 되었습니다.");
+						replyPage = 1;
+						getPage("/replies/" + bno + "/" + replyPage);
+						replyerObj.val("");
+						replytextObj.val("");	// 데이터를 등록했으니 입력 창 초기화 시켜줌.
+					}
+					
 				}
-			}
+			});
+			
 		});
-	});
-	
-	// 댓글 삭제 버튼
-	$("#replyDelBtn").on("click", function(){
 		
-		var rno = $(".modal-title").html();
+		// 댓글의 버튼 이벤트 처리
+		$(".timeline").on("click", ".replyLi", function(event){
+			
+			var reply = $(this);
+			
+			$("#replytext").val(reply.find('.timeline-body').text());
+			$(".modal-title").html(reply.attr("data-rno"));
+		});
 		
-		$.ajax({
-			type : 'delete',
-			url : '/replies/' + rno,
-			headers : {
-				"Context-Type" : "application/json",
-				"X-HTTP-Method-Override" : "DELETE"
-			},
-			dataType : 'text',
-			success : function(result) {
-				console.log("result : " + result);
-				if(result == 'SUCCESS') {
-					alert("삭제 되었습니다.");
-					getPage("/replies/" + bno + "/" + replyPage);
+		// 댓글 수정 버튼
+		$("#replyModBtn").on("click", function(){
+			
+			var rno = $(".modal-title").html();
+			var replytext = $("#replytext").val();
+			
+			$.ajax({
+				type : 'put',
+				url : '/replies/' + rno,
+				headers : {
+					"Content-Type" : "application/json",
+					"X-HTTP-Method-Override" : "PUT"
+				},
+				dataType : 'text',
+				data : JSON.stringify({replytext:replytext}),
+				success : function(result) {
+					console.log("result : " + result);
+					if(result == 'SUCCESS') {
+						alert("수정 되었습니다.");
+						getPage("/replies/" + bno + "/" + replyPage);
+					}
 				}
-			}
+			});
 		});
-	});
-	
-	// 자바스크립트 템플릿 기능 확장 추가
-	Handlebars.registerHelper("prettifyDate", function(timeValue){
-		var dateObj = new Date(timeValue);
-		var year = dateObj.getFullYear();
-		var month = dateObj.getMonth() + 1;
-		var date = dateObj.getDate();
-		return year +"/"+ month +"/"+ date;
-	});
-	
-	var printData = function (replyArr, target, templateObject){
 		
-		var template = Handlebars.compile(templateObject.html());
+		// 댓글 삭제 버튼
+		$("#replyDelBtn").on("click", function(){
+			
+			var rno = $(".modal-title").html();
+			
+			$.ajax({
+				type : 'delete',
+				url : '/replies/' + rno,
+				headers : {
+					"Context-Type" : "application/json",
+					"X-HTTP-Method-Override" : "DELETE"
+				},
+				dataType : 'text',
+				success : function(result) {
+					console.log("result : " + result);
+					if(result == 'SUCCESS') {
+						alert("삭제 되었습니다.");
+						getPage("/replies/" + bno + "/" + replyPage);
+					}
+				}
+			});
+		});
 		
-		var html = template(replyArr);
-		$(".replyLi").remove();
-		target.after(html);
-	}
+		// 자바스크립트 템플릿 기능 확장 추가
+		Handlebars.registerHelper("prettifyDate", function(timeValue){
+			var dateObj = new Date(timeValue);
+			var year = dateObj.getFullYear();
+			var month = dateObj.getMonth() + 1;
+			var date = dateObj.getDate();
+			return year +"/"+ month +"/"+ date;
+		});
+		
+		var printData = function (replyArr, target, templateObject){
+			
+			var template = Handlebars.compile(templateObject.html());
+			
+			var html = template(replyArr);
+			$(".replyLi").remove();
+			target.after(html);
+		}
+		
+	}); // document.ready 끝
+		
 	
 </script>
 </html>

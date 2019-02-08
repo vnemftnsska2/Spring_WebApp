@@ -1,5 +1,10 @@
 package org.tnsska2.aop;
 
+import java.util.Arrays;
+
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
@@ -13,9 +18,26 @@ public class SampleAdvice {
 	private static final Logger logger = LoggerFactory.getLogger(SampleAdvice.class);
 	
 	@Before("execution(* org.tnsska2.service.MessageService*.*(..))")
-	public void startLog() {
+	public void startLog(JoinPoint jp) {
+		// System.out.println("안뜨는 거 같다?");
+		logger.info("-----------------------");
+		logger.info("-----------------------");
+		logger.info(Arrays.toString(jp.getArgs()));
 		
-		logger.info("-----------------------");
-		logger.info("-----------------------");
+	}
+	
+	@Around("execution(* org.tnsska2.service.MessageService*.*(..))")
+	public Object timeLog(ProceedingJoinPoint pjp) throws Throwable {
+		
+		long startTime = System.currentTimeMillis();
+		logger.info(Arrays.toString(pjp.getArgs()));
+		
+		Object result = pjp.proceed();
+		
+		long endTime = System.currentTimeMillis();
+		logger.info(pjp.getSignature().getName()+ " : " + (endTime - startTime));
+		logger.info("==========================================");
+		
+		return result;
 	}
 }

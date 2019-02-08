@@ -27,7 +27,4 @@
 	
 	<context:component-scan base-package="org.tnsska2.controller" />
 	
-	<!-- AOP 설정을 위한 자동 Proxy 객체 생성을 위해 추가 -->
-	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
-	
 </beans:beans>

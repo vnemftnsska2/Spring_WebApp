@@ -24,4 +24,7 @@ public interface ReplyDAO {
 	
 	// 해당 게시물의 댓글 갯수
 	public int count(Integer bno) throws Exception;
+	
+	// 댓글 삭제시 해당 게시글 번호 알아내는 메서드
+	public int getBno(Integer rno) throws Exception;
 }
