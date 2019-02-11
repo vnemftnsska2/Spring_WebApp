@@ -121,5 +121,9 @@
 	<update id="updateViewCnt">
 		update tbl_board set viewcnt = viewcnt + 1 where bno = #{bno} 
 	</update>
+	
+	<insert id="addAttach">
+		insert into tbl_attach (fullname, bno) values (#{fullName}, LAST_INSERT_ID())
+	</insert>
 
 </mapper>
