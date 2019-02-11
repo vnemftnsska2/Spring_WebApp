@@ -100,5 +100,11 @@ public class BoardDAOImpl implements BoardDAO {
 
 		session.insert(namespace + ".addAttach", fullName);
 	}
+
+	@Override
+	public List<String> getAttach(Integer bno) throws Exception {
+
+		return session.selectList(namespace + ".getAttach", bno);
+	}
 	
 }

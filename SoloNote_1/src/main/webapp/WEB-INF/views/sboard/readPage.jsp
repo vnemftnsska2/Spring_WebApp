@@ -109,12 +109,14 @@
 							<button type="button" class="btn btn-danger" id="replyDelBtn">DELETE</button>
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						</div>
+						<ul class="mailbox-attachments clearfix uploadedList"></ul>
 					</div>
 				</div>
 			</div>
 			<!-- end of Modal -->
 	</section>
 	<%@include file="../include/footer.jsp"%>
+	<script type="text/javascript" src="/resources/dist/js/upload.js"></script>
 </body>
 <!-- start of java script template -->
 <script id="template" type="text/x-handlebars-template">
@@ -134,6 +136,15 @@
 </div>
 </li>
 {{/each}}
+</script>
+<!-- 첨부 파일 출력 template -->
+<script id="templateAttach" type="text/x-handlebars-template">
+<li data-src="{{fullName}}">
+	<span class="mailbox-attachment-icon has-img"><img src="{{imgsrc}}" alt="Attachment"></span>
+	<div class="mailbox-attachment-info">
+	<a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
+	</div>
+</li>
 </script>
 <!-- end of java script template -->
 <script>
@@ -317,6 +328,18 @@
 			$(".replyLi").remove();
 			target.after(html);
 		}
+		
+		var template = Handlebars.compile($("#templateAttach").html());
+		
+		$.getJSON("/sboard/getAttach/" + bno, function(list){
+			$(list).each(function(){
+				alert("들어온나");
+				var fileInfo = getFileInfo(this);
+				var html = template(fileInfo);
+				
+				$(".uploadedList").append(html);
+			});
+		});
 		
 	}); // document.ready 끝
 		
