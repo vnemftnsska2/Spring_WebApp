@@ -29,6 +29,15 @@ public class SearchBoardController {
 	@Inject
 	private BoardService service;
 	
+	
+	@RequestMapping(value="/home", method=RequestMethod.GET)
+	public String mainPage() {
+		
+		logger.info("home get.........");
+		
+		return "/home";
+	}
+	
 	// 게시글 리스트 출력
 	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public void listPage(@ModelAttribute("cri")SearchCriteria cri,

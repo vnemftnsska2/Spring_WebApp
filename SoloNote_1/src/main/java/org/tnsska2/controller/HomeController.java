@@ -33,12 +33,32 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "home";
+		return "/user/login";
 	}
 	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public void ajaxText() {
 		
+	}
+	
+	
+	@RequestMapping(value = "/doA", method = RequestMethod.GET)
+	public String doA(Locale locale, Model model) {
+		
+		System.out.println("doA............");
+		
+		return "home";
+	}
+	
+	@RequestMapping(value="/doB", method=RequestMethod.GET)
+	public String doB(Locale locale, Model model) {
+		
+		
+		System.out.println("doB................");
+		
+		model.addAttribute("result", "DOB RESULT");
+		
+		return "home";
 	}
 	
 }

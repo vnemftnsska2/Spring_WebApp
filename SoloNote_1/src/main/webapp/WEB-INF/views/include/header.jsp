@@ -34,7 +34,7 @@
       
       <header class="main-header">
         <!-- Logo -->
-        <a href="/" class="logo">
+        <a href="/sboard/home" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>A</b>LT</span>
           <!-- logo for regular state and mobile devices -->
@@ -255,7 +255,7 @@
                     </p>
                   </li>
                   <!-- Menu Body -->
-                  <li class="user-body">
+                  <!-- <li class="user-body">
                     <div class="col-xs-4 text-center">
                       <a href="#">Followers</a>
                     </div>
@@ -265,14 +265,14 @@
                     <div class="col-xs-4 text-center">
                       <a href="#">Friends</a>
                     </div>
-                  </li>
+                  </li> -->
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                      <a href="#" class="btn btn-default btn-flat">Profile</a>
+                      <a href="/" class="btn btn-default btn-flat">Log In</a>
                     </div>
                     <div class="pull-right">
-                      <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                      <a href="/user/signOut" class="btn btn-default btn-flat">Log Out</a>
                     </div>
                   </li>
                 </ul>

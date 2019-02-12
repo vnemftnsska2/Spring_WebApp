@@ -38,4 +38,38 @@
 		<beans:constructor-arg value="C:\\zzz\\upload"></beans:constructor-arg>
 	</beans:bean>
 	
+	<!-- 인터셉터 설정 (URI 설정이 추가 되어 설정 방식이 다르다) -->
+	<beans:bean id="sampleInterceptor" class="org.tnsska2.interceptor.SampleInterceptor">
+	</beans:bean>
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/doA"/>
+			<mapping path="/doB"/>
+			<beans:ref bean="sampleInterceptor"/>
+		</interceptor>
+	</interceptors>
+	<!-- interceptor TEST END -->
+	<!-- 실전 Interceptor -->
+	<beans:bean id="loginInterceptor" class="org.tnsska2.interceptor.LoginInterceptor"></beans:bean>
+	<beans:bean id="authInterceptor" class="org.tnsska2.interceptor.AuthInterceptor">
+	</beans:bean>
+	
+	<interceptors>
+		
+		<interceptor>
+			<mapping path="/user/loginPost"/>
+			<beans:ref bean="loginInterceptor"/>
+		</interceptor>
+		
+		<interceptor>
+			<!-- <mapping path="/user/register"/> -->
+			<mapping path="/sboard/register"/>
+			<mapping path="/sboard/modifyPage"/>
+			<mapping path="/sboard/removePage"/>
+			<beans:ref bean="authInterceptor"/>
+		</interceptor>
+		
+	</interceptors>
+	<!-- interceptor 설정 마무리 -->
 </beans:beans>
