@@ -36,9 +36,11 @@ public class BoardController {
 		logger.info("register post......");
 		logger.info(board.toString());
 		
+		
 		service.regist(board);
 		rttr.addFlashAttribute("msg", "SUCCESS");
 		
+		//return "aaa";
 		/*return "/board/success";*/
 		return "redirect:/board/listAll";		  
 	}

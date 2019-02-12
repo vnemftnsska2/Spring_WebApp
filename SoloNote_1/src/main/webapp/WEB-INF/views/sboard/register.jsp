@@ -32,7 +32,7 @@
 					</div>
 					<!-- /.box-header -->
 
-					<form role="form" method="post">
+					<form role="form" method="post" id="registerForm">
 						<div class="box-body">
 							<div class="form-group">
 								<label for="exampleInputEmail1">Title</label> <input type="text"
@@ -61,7 +61,7 @@
 						
 						<ul class="mailbox-attachments clearfix uploadedList">
 						</ul>
-							<button type="submit" class="btn btn-primary">Submit</button>
+							<button type="submit" class="btn btn-primary saveBtn">Submit</button>
 						</div>
 					</form>
 				</div>
@@ -90,6 +90,8 @@
 
 	var template = Handlebars.compile($("#template").html());
 	
+	
+	// 첨부 파일 드래그했을 때 발생하는 이벤트 처리
 	$(".fileDrop").on("dragenter dragover", function(event){
 		event.preventDefault();
 	});
@@ -122,6 +124,8 @@
 	$("#registerForm").submit(function(event){
 		event.preventDefault();
 		
+		
+		
 		var that = $(this);
 		var str = "";
 		
@@ -130,6 +134,9 @@
 		});
 		
 		that.append(str);
+		
+		//alert(str);
+		
 		that.get(0).submit();
 		
 	});

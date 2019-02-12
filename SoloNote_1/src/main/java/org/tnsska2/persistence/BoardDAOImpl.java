@@ -106,5 +106,24 @@ public class BoardDAOImpl implements BoardDAO {
 
 		return session.selectList(namespace + ".getAttach", bno);
 	}
+
+	@Override
+	public void deleteAttach(Integer bno) throws Exception {
+
+		session.delete(namespace + ".deleteAttach", bno);
+	}
+
+	@Override
+	public void replaceAttach(String fullName, Integer bno) throws Exception {
+
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		paramMap.put("bno", bno);
+		paramMap.put("fullName",fullName);
+		
+		// mapper에서 Map 객체를 다른 설정 없이도 받을 수 있다는 걸 보여주는 예
+		// 만약 매개변수로 두 개 이상의 값이 넘어오면 Map을 통해서 값을 넘겨주면 된다.
+		session.insert(namespace + ".replaceAttach", paramMap);
+	}
 	
 }

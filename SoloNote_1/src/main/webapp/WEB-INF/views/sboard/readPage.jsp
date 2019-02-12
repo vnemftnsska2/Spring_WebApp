@@ -8,6 +8,36 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	
+	.popup {
+		position: absolute;
+	}
+	
+	.back {
+		background-color: gray;
+		opacity: 0.5;
+		width: 100%;
+		height: 300%;
+		overflow: hidden;
+		z-index: 1101;
+	}
+	
+	.front {
+		z-index: 11110;
+		opacity: 1;
+		border: 1px;
+		margin: auto;
+	}
+	
+	.show {
+		position: relative;
+		max-width: 1200px;
+		max-height: 800px;
+		overflow: auto;
+	}
+
+</style>
 </head>
 <body>
 <%@include file="../include/header.jsp"%>
@@ -22,7 +52,11 @@
 						<h3 class="box-title">READ BOARD</h3>
 					</div>
 					<!-- /.box-header -->
-
+					<!-- 첨부파일 이미지 보이도록 처리 -->
+					<div class="popup back" style="display:none"></div>
+						<div id="popup_front" class="popup front" style="display:none"><img id="popup_img">
+					</div>
+					<!-- 첨부파일 END -->
 					<form role="form" action="modifyPage" method="post">
 						<input type='hidden' name='bno' value="${boardVO.bno}"> <input
 							type='hidden' name='page' value="${cri.page }"> <input
@@ -53,10 +87,15 @@
 						<span style="float: right;">
 							<button type="submit" class="btn btn-warning" id="modifyBtn">수정</button>
 							<button type="submit" class="btn btn-danger" id="removeBtn">삭제</button>
-							<button type="submit" class="btn btn-primary" id="goListBtn">목록
-							</button>
+							<button type="submit" class="btn btn-primary" id="goListBtn">목록							</button>
 						</span>
 					</div>
+					<!-- 첨부파일 출력 div -->
+					<div>
+						<ul class="mailbox-attachments clearfix uploadedList">
+						</ul>
+					</div>
+					<!-- 첨부파일 END  -->
 				</div>
 				<!-- /.box -->
 			</div>
@@ -163,6 +202,24 @@
 
 		$("#removeBtn").on("click", function() {
 
+			var replyCnt = $("#replycntSmall").html().replace(/[^0-9]/g,"");
+			
+			if(replyCnt > 0) {
+				alert("댓글이 달린 게시물은 삭제할 수 없습니다.");
+				return;
+			}
+			
+			var arr = [];
+			$(".uploadedList li").each(function(index){
+				arr.push($(this).attr("data-src"));
+			});
+			
+			if(arr.length > 0){
+				$.post("/deleteAllFiles", {files:arr}, function(){
+					
+				});
+			}
+			
 			formObj.attr("action", "/sboard/removePage");
 			formObj.submit();
 		});
@@ -333,9 +390,11 @@
 		
 		$.getJSON("/sboard/getAttach/" + bno, function(list){
 			$(list).each(function(){
-				alert("들어온나");
+				//alert("들어온나");
 				var fileInfo = getFileInfo(this);
 				var html = template(fileInfo);
+				
+				console.log(html)
 				
 				$(".uploadedList").append(html);
 			});
@@ -343,6 +402,29 @@
 		
 	}); // document.ready 끝
 		
+	// img파일 확대와 다운로드
+	$(".uploadedList").on("click", ".mailbox-attachment-info a", function(event){
+		
+		var fileLink = $(this).attr("href");
+		
+		if(checkImageType(fileLink)) {
+			
+			event.preventDefault();
+			
+			var imgTag = $("#popup_img");
+			imgTag.attr("src", fileLink);
+			
+			console.log(imgTag.attr("src"));
+			
+			$(".popup").show('slow');
+			imgTag.addClass("show");
+		}
+	});
+	
+	$("#popup_img").on("click", function(){
+		$(".popup").hide('slow');
+	});
+	
 	
 </script>
 </html>

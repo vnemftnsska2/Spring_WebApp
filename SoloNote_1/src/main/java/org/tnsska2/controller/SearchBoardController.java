@@ -64,6 +64,7 @@ public class SearchBoardController {
 		service.regist(board);
 		rttr.addFlashAttribute("msg", "SUCCESS");
 		
+		//return "aaa";	// 이렇게 하는 이유가 로그 덜 뜨게 하려고 하는 건가요?
 		/*return "/board/success";*/
 		return "redirect:/sboard/list";		  
 	}
@@ -120,6 +121,8 @@ public class SearchBoardController {
 		
 		logger.info(rttr.toString());
 		
+		
+		//return "redirect:/sboard/aaa";
 		return "redirect:/sboard/list";
 	}
 	
